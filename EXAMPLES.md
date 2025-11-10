@@ -272,7 +272,7 @@ await http.get(url);
 
 1. **Start with one example**: Don't try to learn everything at once
 2. **Read the inline comments**: Each example has extensive documentation
-3. **Compare side-by-side**: The split view makes differences obvious
+3. **Compare implementations**: Non-optimized shown first (bad practice), then optimized (good practice) below
 4. **Try the interactions**: Click, scroll, type to see real behavior
 5. **Read the technique cards**: Each example explains what's happening
 

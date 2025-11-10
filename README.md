@@ -110,7 +110,7 @@ lib/
    - Debouncing Demo
    - Background Processing
    - Network Optimization
-4. **Comparison Dashboard**: Side-by-side metrics comparison
+4. **Comparison View**: Non-optimized vs optimized implementations (vertical layout)
 
 ## 🛠️ Technologies Used
 

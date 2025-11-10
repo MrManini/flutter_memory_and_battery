@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// Widget for side-by-side comparison of optimized vs non-optimized implementations
+/// Widget for top-down comparison of optimized vs non-optimized implementations
+/// Shows non-optimized (bad practice) first, then optimized (good practice) below
 class ComparisonView extends StatelessWidget {
   final String title;
   final Widget optimizedWidget;
@@ -13,8 +14,8 @@ class ComparisonView extends StatelessWidget {
     required this.title,
     required this.optimizedWidget,
     required this.nonOptimizedWidget,
-    this.optimizedLabel = 'Optimized',
-    this.nonOptimizedLabel = 'Non-Optimized',
+    this.optimizedLabel = 'Optimized ✓',
+    this.nonOptimizedLabel = 'Non-Optimized ✗',
   });
 
   @override
@@ -24,97 +25,85 @@ class ComparisonView extends StatelessWidget {
         title: Text(title),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: Column(
+      body: ListView(
         children: [
-          // Header with labels
-          Container(
-            padding: const EdgeInsets.all(16),
-            color: Colors.grey[100],
-            child: Row(
-              children: [
-                Expanded(
-                  child: _buildLabel(
-                    context,
-                    optimizedLabel,
-                    Colors.green,
-                    Icons.check_circle,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildLabel(
-                    context,
-                    nonOptimizedLabel,
-                    Colors.orange,
-                    Icons.warning,
-                  ),
-                ),
-              ],
-            ),
+          // Non-Optimized section (shown first - bad practice)
+          _buildSection(
+            context: context,
+            label: nonOptimizedLabel,
+            color: Colors.orange,
+            icon: Icons.warning,
+            widget: nonOptimizedWidget,
+            isFirst: true,
           ),
           
-          // Divider
-          const Divider(height: 1, thickness: 2),
+          // Divider between sections
+          Container(
+            height: 12,
+            color: Colors.grey[200],
+          ),
           
-          // Side-by-side comparison
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        right: BorderSide(
-                          color: Colors.grey[300]!,
-                          width: 1,
-                        ),
-                      ),
-                    ),
-                    child: optimizedWidget,
-                  ),
-                ),
-                Expanded(
-                  child: nonOptimizedWidget,
-                ),
-              ],
-            ),
+          // Optimized section (shown second - good practice)
+          _buildSection(
+            context: context,
+            label: optimizedLabel,
+            color: Colors.green,
+            icon: Icons.check_circle,
+            widget: optimizedWidget,
+            isFirst: false,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildLabel(
-    BuildContext context,
-    String label,
-    Color color,
-    IconData icon,
-  ) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color, width: 2),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: color, size: 20),
-          const SizedBox(width: 8),
-          Flexible(
-            child: Text(
-              label,
-              style: TextStyle(
-                color: color,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-              ),
-              overflow: TextOverflow.ellipsis,
+  Widget _buildSection({
+    required BuildContext context,
+    required String label,
+    required Color color,
+    required IconData icon,
+    required Widget widget,
+    required bool isFirst,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Section header
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.15),
+            border: Border(
+              bottom: BorderSide(color: color, width: 2),
             ),
           ),
-        ],
-      ),
+          child: Row(
+            children: [
+              Icon(icon, color: color, size: 24),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        // Section content
+        Container(
+          constraints: const BoxConstraints(
+            minHeight: 300,
+            maxHeight: 600,
+          ),
+          child: widget,
+        ),
+      ],
     );
   }
 }
