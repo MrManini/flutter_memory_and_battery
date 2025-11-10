@@ -17,11 +17,12 @@ class PerformanceUtils {
   ///   () => performSearch(query),
   /// );
   /// ```
-  static Timer? debounce(Duration duration, void Function() callback) {
+  static void Function() debounce(Duration duration, void Function() callback) {
     Timer? timer;
-    timer?.cancel();
-    timer = Timer(duration, callback);
-    return timer;
+    return () {
+      timer?.cancel();
+      timer = Timer(duration, callback);
+    };
   }
 
   /// Throttles a function call to execute at most once per specified duration.

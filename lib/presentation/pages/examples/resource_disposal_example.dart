@@ -32,7 +32,6 @@ class _OptimizedDisposalExample extends StatefulWidget {
 class _OptimizedDisposalExampleState extends State<_OptimizedDisposalExample> {
   late TextEditingController _controller;
   late ScrollController _scrollController;
-  late AnimationController _animationController;
   Timer? _timer;
   StreamSubscription? _subscription;
   int _timerTicks = 0;

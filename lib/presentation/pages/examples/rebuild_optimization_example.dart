@@ -30,7 +30,7 @@ class _OptimizedRebuildExample extends StatefulWidget {
 
 class _OptimizedRebuildExampleState extends State<_OptimizedRebuildExample> {
   int _counter = 0;
-  int _rebuilds = 0;
+  //int _rebuilds = 0;
 
   @override
   Widget build(BuildContext context) {

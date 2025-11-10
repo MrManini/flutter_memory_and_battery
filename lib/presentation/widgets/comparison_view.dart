@@ -23,7 +23,7 @@ class ComparisonView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.surface,
       ),
       body: ListView(
         children: [
@@ -31,17 +31,13 @@ class ComparisonView extends StatelessWidget {
           _buildSection(
             context: context,
             label: nonOptimizedLabel,
-            color: Colors.orange,
-            icon: Icons.warning,
+            color: Colors.red,
+            icon: Icons.cancel,
             widget: nonOptimizedWidget,
             isFirst: true,
           ),
           
-          // Divider between sections
-          Container(
-            height: 12,
-            color: Colors.grey[200],
-          ),
+
           
           // Optimized section (shown second - good practice)
           _buildSection(
@@ -99,7 +95,7 @@ class ComparisonView extends StatelessWidget {
         Container(
           constraints: const BoxConstraints(
             minHeight: 300,
-            maxHeight: 600,
+            maxHeight: 500,
           ),
           child: widget,
         ),
