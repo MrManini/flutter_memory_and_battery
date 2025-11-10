@@ -1,5 +1,5 @@
 name: flutter_memory_and_battery
-description: "A new Flutter project."
+description: "A Flutter template demonstrating memory and battery optimization techniques with clean architecture."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -34,6 +34,18 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  
+  # State management - lightweight and performant
+  provider: ^6.1.1
+  
+  # Value equality for better performance
+  equatable: ^2.0.5
+  
+  # HTTP client for network optimization examples
+  http: ^1.2.0
+  
+  # Cached network images for image optimization
+  cached_network_image: ^3.3.1
 
 dev_dependencies:
   flutter_test:

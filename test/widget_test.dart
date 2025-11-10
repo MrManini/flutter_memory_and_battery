@@ -1,30 +1,43 @@
-// This is a basic Flutter widget test.
+// Flutter Memory and Battery Optimization Template Tests
 //
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// These tests verify the basic structure and functionality of the app.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:flutter_memory_and_battery/main.dart';
+import 'package:flutter_memory_and_battery/core/constants/app_constants.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('App starts and displays home page', (WidgetTester tester) async {
+    // Build the app and trigger a frame
     await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verify the app title is displayed
+    expect(find.text(AppConstants.appTitle), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Verify the welcome message is displayed
+    expect(find.text('Welcome! 👋'), findsOneWidget);
+  });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  testWidgets('Memory optimization section is displayed', (WidgetTester tester) async {
+    await tester.pumpWidget(const MyApp());
+
+    // Verify memory optimization section is present
+    expect(find.text('Memory Optimization'), findsOneWidget);
+  });
+
+  testWidgets('Battery optimization section is displayed', (WidgetTester tester) async {
+    await tester.pumpWidget(const MyApp());
+
+    // Verify battery optimization section is present
+    expect(find.text('Battery Optimization'), findsOneWidget);
+  });
+
+  testWidgets('Example cards are displayed', (WidgetTester tester) async {
+    await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
+
+    // Verify that at least one example card is displayed
+    expect(find.byType(Card), findsWidgets);
   });
 }
