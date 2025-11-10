@@ -155,132 +155,122 @@ class _OptimizedListView extends StatelessWidget {
       'Only renders visible items - efficient memory usage',
     );
 
-    return Container(
-      child: Column(
-        children: [
-          // Header
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            color: Colors.green,
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(Icons.check_circle, color: Colors.white, size: 24),
-                    SizedBox(width: 8),
-                    Text(
-                      'ListView.builder',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8),
-                Text(
-                  '✅ Only renders visible items\n✅ Lazy loading for performance\n✅ Minimal memory footprint',
-                  style: TextStyle(fontSize: 14, color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-          // List content
-          Expanded(
-            child: ListView.builder(
-              // Only creates widgets for visible items
-              itemCount: AppConstants.largeListItemCount,
-              itemBuilder: (context, index) {
-                // Log only occasionally to avoid spam
-                if (index % 100 == 0) {
-                  AppLogger.logMemoryEvent(
+    return Column(
+      children: [
+        // Header
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          color: Colors.green,
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.check_circle, color: Colors.white, size: 24),
+                  SizedBox(width: 8),
+                  Text(
                     'ListView.builder',
-                    'Lazy-loaded item $index',
-                  );
-                }
-
-                return Card(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 2,
-                  ),
-                  elevation: 1,
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.green,
-                      child: Text(
-                        '${(index + 1) ~/ 1000}K',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                        ),
-                      ),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.white,
                     ),
-                    title: Text('Optimized Item $index'),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Text(
+                '✅ Only renders visible items\n✅ Lazy loading for performance\n✅ Minimal memory footprint',
+                style: TextStyle(fontSize: 14, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+        // List content
+        Expanded(
+          child: ListView.builder(
+            // Only creates widgets for visible items
+            itemCount: AppConstants.largeListItemCount,
+            itemBuilder: (context, index) {
+              // Log only occasionally to avoid spam
+              if (index % 100 == 0) {
+                AppLogger.logMemoryEvent(
+                  'ListView.builder',
+                  'Lazy-loaded item $index',
+                );
+              }
+
+              return Card(
+                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                elevation: 1,
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.green,
+                    child: Text(
+                      '${(index + 1) ~/ 1000}K',
+                      style: const TextStyle(color: Colors.white, fontSize: 10),
+                    ),
+                  ),
+                  title: Text('Optimized Item $index'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Rendered on-demand • Memory efficient'),
+                      SizedBox(height: 4),
+                      LinearProgressIndicator(
+                        value: 1.0, // Always full to show efficiency
+                        backgroundColor: Colors.grey,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                      ),
+                    ],
+                  ),
+                  trailing: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Rendered on-demand • Memory efficient'),
-                        SizedBox(height: 4),
-                        LinearProgressIndicator(
-                          value: 1.0, // Always full to show efficiency
-                          backgroundColor: Colors.grey,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.green,
+                        Text(
+                          '#${index + 1}',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
                           ),
+                        ),
+                        Text(
+                          'Lazy',
+                          style: TextStyle(fontSize: 10, color: Colors.green),
                         ),
                       ],
                     ),
-                    trailing: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            '#${index + 1}',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            'Lazy',
-                            style: TextStyle(fontSize: 10, color: Colors.green),
-                          ),
-                        ],
-                      ),
-                    ),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
-          // Footer
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(12),
-            color: Colors.green,
-            child: Text(
-              '🎯 ${AppConstants.largeListItemCount.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')} items available with minimal memory usage!',
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-              textAlign: TextAlign.center,
+        ),
+        // Footer
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(12),
+          color: Colors.green,
+          child: Text(
+            '🎯 ${AppConstants.largeListItemCount.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')} items available with minimal memory usage!',
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
+            textAlign: TextAlign.center,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -299,158 +289,153 @@ class _NonOptimizedListView extends StatelessWidget {
       'Creating ALL $itemCount widgets at once - memory intensive!',
     );
 
-    return Container(
-      child: Column(
-        children: [
-          // Header
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            color: Colors.redAccent[700],
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(Icons.warning, color: Colors.white, size: 24),
-                    SizedBox(width: 8),
-                    Text(
-                      'ListView (Regular)',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
+    return Column(
+      children: [
+        // Header
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          color: Colors.redAccent[700],
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.warning, color: Colors.white, size: 24),
+                  SizedBox(width: 8),
+                  Text(
+                    'ListView (Regular)',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.white,
                     ),
-                  ],
-                ),
-                SizedBox(height: 8),
-                Text(
-                  '❌ Creates ALL widgets upfront\n❌ High memory usage\n❌ Slower initial load',
-                  style: TextStyle(fontSize: 14, color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-          // List content
-          Expanded(
-            child: ListView(
-              // Creates ALL widgets immediately - memory intensive!
-              children: List.generate(itemCount, (index) {
-                // Log every 50 items to show the mass creation
-                if (index % 50 == 0) {
-                  AppLogger.logMemoryEvent(
-                    'Regular ListView',
-                    'Pre-created widget $index (wasteful!)',
-                  );
-                }
-
-                return Card(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 2,
                   ),
-                  elevation: 2,
-                  child: ExpansionTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.red,
-                      child: const Icon(
-                        Icons.memory,
-                        color: Colors.white,
-                        size: 16,
-                      ),
+                ],
+              ),
+              SizedBox(height: 8),
+              Text(
+                '❌ Creates ALL widgets upfront\n❌ High memory usage\n❌ Slower initial load',
+                style: TextStyle(fontSize: 14, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+        // List content
+        Expanded(
+          child: ListView(
+            // Creates ALL widgets immediately - memory intensive!
+            children: List.generate(itemCount, (index) {
+              // Log every 50 items to show the mass creation
+              if (index % 50 == 0) {
+                AppLogger.logMemoryEvent(
+                  'Regular ListView',
+                  'Pre-created widget $index (wasteful!)',
+                );
+              }
+
+              return Card(
+                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                elevation: 2,
+                child: ExpansionTile(
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.red,
+                    child: const Icon(
+                      Icons.memory,
+                      color: Colors.white,
+                      size: 16,
                     ),
-                    title: Text('Non-Optimized Item $index'),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
+                  title: Text('Non-Optimized Item $index'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Created upfront • Wastes memory'),
+                      LinearProgressIndicator(
+                        value:
+                            ((index * 2.5 + 15) % 50) /
+                            50, // Progress based on memory usage
+                        backgroundColor: Colors.grey.shade300,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                      ),
+                    ],
+                  ),
+                  trailing: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text('Created upfront • Wastes memory'),
-                        LinearProgressIndicator(
-                          value:
-                              ((index * 2.5 + 15) % 50) /
-                              50, // Progress based on memory usage
-                          backgroundColor: Colors.grey.shade300,
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                        Text(
+                          '#${index + 1}',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          '${(index * 2.5 + 15).toStringAsFixed(1)}KB',
+                          style: TextStyle(fontSize: 10, color: Colors.red),
                         ),
                       ],
                     ),
-                    trailing: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                  ),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            '#${index + 1}',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            'This widget was pre-created even though you might never see it! '
+                            'It contains complex nested widgets that consume memory unnecessarily.',
+                            style: TextStyle(color: Colors.grey),
                           ),
-                          Text(
-                            '${(index * 2.5 + 15).toStringAsFixed(1)}KB',
-                            style: TextStyle(fontSize: 10, color: Colors.red),
+                          SizedBox(height: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Chip(
+                                label: Text(
+                                  'Memory: ${(index * 2.5 + 15).toInt()}KB',
+                                ),
+                                backgroundColor: Colors.redAccent[700],
+                              ),
+                              Chip(
+                                label: Text('ID: $index'),
+                                backgroundColor: Colors.grey[700],
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            Text(
-                              'This widget was pre-created even though you might never see it! '
-                              'It contains complex nested widgets that consume memory unnecessarily.',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Chip(
-                                  label: Text(
-                                    'Memory: ${(index * 2.5 + 15).toInt()}KB',
-                                  ),
-                                  backgroundColor: Colors.redAccent[700],
-                                ),
-                                Chip(
-                                  label: Text('ID: $index'),
-                                  backgroundColor: Colors.grey[700],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }),
-            ),
+                  ],
+                ),
+              );
+            }),
           ),
-          // Footer
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(12),
-            color: Colors.redAccent[700],
-            child: Text(
-              '⚠️ Only $itemCount items (limited to prevent memory crash!)',
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-              textAlign: TextAlign.center,
+        ),
+        // Footer
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(12),
+          color: Colors.redAccent[700],
+          child: Text(
+            '⚠️ Only $itemCount items (limited to prevent memory crash!)',
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
+            textAlign: TextAlign.center,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
