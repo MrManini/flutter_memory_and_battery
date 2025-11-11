@@ -75,37 +75,6 @@ class _OptimizedImageExample extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         
-        // Asset image with optimization
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Image.asset(
-            'assets/images/placeholder.png',
-            width: double.infinity,
-            height: 200,
-            fit: BoxFit.cover,
-            // These parameters decode the image at the specified size
-            cacheWidth: AppConstants.optimizedImageWidth,
-            cacheHeight: AppConstants.optimizedImageHeight,
-            errorBuilder: (context, error, stackTrace) {
-              return Container(
-                height: 200,
-                color: Colors.grey[300],
-                child: const Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.image, size: 48, color: Colors.grey),
-                      SizedBox(height: 8),
-                      Text('Placeholder image'),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        const SizedBox(height: 16),
-        
         const Card(
           color: Colors.green,
           child: Padding(
@@ -174,35 +143,6 @@ class _NonOptimizedImageExample extends StatelessWidget {
                 height: 200,
                 color: Colors.grey[300],
                 child: const Icon(Icons.error),
-              );
-            },
-          ),
-        ),
-        const SizedBox(height: 16),
-        
-        // Asset image without optimization
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Image.asset(
-            'assets/images/placeholder.png',
-            width: double.infinity,
-            height: 200,
-            fit: BoxFit.cover,
-            // No cacheWidth/cacheHeight parameters
-            errorBuilder: (context, error, stackTrace) {
-              return Container(
-                height: 200,
-                color: Colors.grey[300],
-                child: const Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.image, size: 48, color: Colors.grey),
-                      SizedBox(height: 8),
-                      Text('Placeholder image'),
-                    ],
-                  ),
-                ),
               );
             },
           ),
