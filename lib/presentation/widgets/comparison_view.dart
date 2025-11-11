@@ -8,6 +8,7 @@ class ComparisonView extends StatelessWidget {
   final Widget nonOptimizedWidget;
   final String optimizedLabel;
   final String nonOptimizedLabel;
+  final List<Widget>? actionButtons;
 
   const ComparisonView({
     super.key,
@@ -16,6 +17,7 @@ class ComparisonView extends StatelessWidget {
     required this.nonOptimizedWidget,
     this.optimizedLabel = 'Optimized ✓',
     this.nonOptimizedLabel = 'Non-Optimized ✗',
+    this.actionButtons,
   });
 
   @override
@@ -24,6 +26,7 @@ class ComparisonView extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
         backgroundColor: Theme.of(context).colorScheme.surface,
+        actions: actionButtons,
       ),
       body: ListView(
         children: [
