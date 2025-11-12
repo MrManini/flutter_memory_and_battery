@@ -39,9 +39,7 @@ class ComparisonView extends StatelessWidget {
             widget: nonOptimizedWidget,
             isFirst: true,
           ),
-          
 
-          
           // Optimized section (shown second - good practice)
           _buildSection(
             context: context,
@@ -72,9 +70,7 @@ class ComparisonView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           decoration: BoxDecoration(
             color: color.withOpacity(0.15),
-            border: Border(
-              bottom: BorderSide(color: color, width: 2),
-            ),
+            border: Border(bottom: BorderSide(color: color, width: 2)),
           ),
           child: Row(
             children: [
@@ -93,13 +89,10 @@ class ComparisonView extends StatelessWidget {
             ],
           ),
         ),
-        
+
         // Section content
         Container(
-          constraints: const BoxConstraints(
-            minHeight: 300,
-            maxHeight: 600,
-          ),
+          constraints: const BoxConstraints(minHeight: 300, maxHeight: 600),
           child: widget,
         ),
       ],

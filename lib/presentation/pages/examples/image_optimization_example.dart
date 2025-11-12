@@ -163,7 +163,7 @@ class _OptimizedImageExampleState extends State<_OptimizedImageExample> {
 
   void _startTimer() {
     if (_isLoading) return;
-    
+
     setState(() {
       _isLoading = true;
       _loadTime = 0;
