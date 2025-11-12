@@ -1,15 +1,16 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 /// Utility class for performance optimization techniques
 class PerformanceUtils {
   /// Debounces a function call by delaying execution until after a specified time
   /// has elapsed since the last time it was invoked.
-  /// 
+  ///
   /// This is useful for:
   /// - Search input fields
   /// - API calls triggered by user input
   /// - Scroll event handlers
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final debouncer = PerformanceUtils.debounce(
@@ -27,7 +28,7 @@ class PerformanceUtils {
 
   /// Throttles a function call to execute at most once per specified duration.
   /// Unlike debounce, throttle ensures the function is called at regular intervals.
-  /// 
+  ///
   /// This is useful for:
   /// - Scroll event handlers
   /// - Window resize handlers
@@ -66,8 +67,44 @@ class PerformanceUtils {
   }
 
   /// Simulates heavy computation using compute (isolate)
-  static List<int> computeHeavyTask(int count) {
-    return List.generate(count, (index) => index * index);
+  static List<double> computeHeavyTask(int iterations) {
+    final results = <double>[];
+
+    // Perform intensive mathematical operations
+    for (int i = 0; i < iterations; i++) {
+      double result = 0;
+
+      // Nested loops with expensive operations
+      for (int j = 0; j < 1000; j++) {
+        for (int k = 0; k < 100; k++) {
+          // Complex mathematical operations that consume CPU
+          result += (i * j * k).toDouble();
+          result = result * 1.001; // Multiplication
+          result = result / 1.0001; // Division
+          result += (i + j + k) * 0.5; // More operations
+
+          // Trigonometric functions (expensive)
+          if (k % 10 == 0) {
+            result += math.sin(result * 0.1);
+            result += math.cos(result * 0.1);
+          }
+
+          // Square root operations
+          if (result > 0) {
+            result = math.sqrt(result);
+            result = result * result; // Square it back
+          }
+        }
+      }
+
+      results.add(result);
+
+      // Add some string operations too
+      final str = 'computation_$i';
+      str.split('_').join('-').toUpperCase().toLowerCase();
+    }
+
+    return results;
   }
 }
 

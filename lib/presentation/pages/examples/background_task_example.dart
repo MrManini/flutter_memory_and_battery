@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import '../../../core/utils/performance_utils.dart';
+import '../../../core/utils/app_logger.dart';
 import '../../widgets/comparison_view.dart';
 
 /// Example demonstrating background task optimization with isolates
-/// 
+///
 /// KEY OPTIMIZATION:
 /// Use compute() to run expensive operations on separate isolates,
 /// preventing UI blocking and distributing CPU load.
@@ -42,20 +43,30 @@ class _OptimizedBackgroundExampleState
       _result = 'Processing in isolate...';
     });
 
+    AppLogger.info('✅ OPTIMIZED: Starting heavy computation in isolate...');
+
     try {
+      final startTime = DateTime.now();
       // Run computation in a separate isolate - UI stays responsive!
-      final result = await compute(PerformanceUtils.computeHeavyTask, 5000);
-      
+      final result = await compute(PerformanceUtils.computeHeavyTask, 50);
+      final endTime = DateTime.now();
+      final duration = endTime.difference(startTime).inMilliseconds;
+
       setState(() {
         _isProcessing = false;
-        _result = 'Completed ${result.length} calculations';
+        _result = 'Completed ${result.length} calculations in ${duration}ms';
         _taskCount++;
       });
+
+      AppLogger.info(
+        '✅ OPTIMIZED: Computation completed in isolate - UI stayed responsive! (${duration}ms)',
+      );
     } catch (e) {
       setState(() {
         _isProcessing = false;
         _result = 'Error: $e';
       });
+      AppLogger.error('❌ OPTIMIZED: Error in isolate computation: $e');
     }
   }
 
@@ -121,11 +132,15 @@ class _OptimizedBackgroundExampleState
                           height: 16,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
                           ),
                         )
                       : const Icon(Icons.play_arrow),
-                  label: Text(_isProcessing ? 'Processing...' : 'Run Heavy Task'),
+                  label: Text(
+                    _isProcessing ? 'Processing...' : 'Run Heavy Task',
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     foregroundColor: Colors.white,
@@ -218,14 +233,26 @@ class _NonOptimizedBackgroundExampleState
       _result = 'Processing on UI thread...';
     });
 
+    AppLogger.warning(
+      '⚠️ NON-OPTIMIZED: Starting heavy computation on UI thread - UI will freeze!',
+    );
+    final startTime = DateTime.now();
+
     // PROBLEM: Running on UI thread - blocks UI!
-    final result = PerformanceUtils.computeHeavyTask(5000);
-    
+    final result = PerformanceUtils.computeHeavyTask(50);
+
+    final endTime = DateTime.now();
+    final duration = endTime.difference(startTime).inMilliseconds;
+
     setState(() {
       _isProcessing = false;
-      _result = 'Completed ${result.length} calculations';
+      _result = 'Completed ${result.length} calculations in ${duration}ms';
       _taskCount++;
     });
+
+    AppLogger.error(
+      '❌ NON-OPTIMIZED: Computation completed on UI thread - UI was frozen for ${duration}ms!',
+    );
   }
 
   @override
@@ -234,7 +261,7 @@ class _NonOptimizedBackgroundExampleState
       padding: const EdgeInsets.all(16),
       children: [
         const Card(
-          color: Colors.orange,
+          color: Colors.red,
           child: Padding(
             padding: EdgeInsets.all(16),
             child: Column(
@@ -242,7 +269,7 @@ class _NonOptimizedBackgroundExampleState
               children: [
                 Row(
                   children: [
-                    Icon(Icons.warning, color: Colors.white),
+                    Icon(Icons.cancel, color: Colors.white),
                     SizedBox(width: 8),
                     Text(
                       'UI Thread Processing',
@@ -290,13 +317,17 @@ class _NonOptimizedBackgroundExampleState
                           height: 16,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
                           ),
                         )
                       : const Icon(Icons.play_arrow),
-                  label: Text(_isProcessing ? 'Processing...' : 'Run Heavy Task'),
+                  label: Text(
+                    _isProcessing ? 'Processing...' : 'Run Heavy Task',
+                  ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
@@ -340,7 +371,7 @@ class _NonOptimizedBackgroundExampleState
         ),
         const SizedBox(height: 16),
         // Animated element to show UI blocking
-        const _AnimatedIndicator(color: Colors.orange),
+        const _AnimatedIndicator(color: Colors.red),
         const SizedBox(height: 16),
         const Card(
           child: Padding(
@@ -369,7 +400,7 @@ class _NonOptimizedBackgroundExampleState
 /// Animated indicator to show UI responsiveness
 class _AnimatedIndicator extends StatefulWidget {
   final Color color;
-  
+
   const _AnimatedIndicator({required this.color});
 
   @override
