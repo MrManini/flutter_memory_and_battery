@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/utils/performance_utils.dart';
+import '../../../core/utils/app_logger.dart';
 import '../../widgets/comparison_view.dart';
 
 /// Example demonstrating debouncing for battery optimization
@@ -40,13 +41,21 @@ class _OptimizedDebouncingExampleState
   String _lastSearch = '';
 
   @override
+  void initState() {
+    super.initState();
+    AppLogger.info('✅ OPTIMIZED: Debouncer initialized with ${AppConstants.debounceMilliseconds}ms delay');
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     _debouncer.dispose();
+    AppLogger.info('✅ OPTIMIZED: Debouncer disposed - search operations cancelled');
     super.dispose();
   }
 
   void _onSearchChanged(String query) {
+    AppLogger.debug('🔤 OPTIMIZED: User typed: "$query" - debouncing...');
     _debouncer(() {
       // This only executes after user stops typing for 500ms
       setState(() {
@@ -54,7 +63,7 @@ class _OptimizedDebouncingExampleState
         _lastSearch = query;
       });
       // Simulate API call
-      debugPrint('Performing search for: $query');
+      AppLogger.info('🔍 OPTIMIZED: Debounced search performed for: "$query" (Search #$_searchCount)');
     });
   }
 
@@ -195,19 +204,27 @@ class _NonOptimizedDebouncingExampleState
   String _lastSearch = '';
 
   @override
+  void initState() {
+    super.initState();
+    AppLogger.warning('⚠️ NON-OPTIMIZED: No debouncing - will search on every keystroke!');
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
+    AppLogger.warning('⚠️ NON-OPTIMIZED: Controller disposed but no debouncer to clean up');
     super.dispose();
   }
 
   void _onSearchChanged(String query) {
     // PROBLEM: This executes on EVERY keystroke!
+    AppLogger.debug('🔤 NON-OPTIMIZED: User typed: "$query" - searching immediately...');
     setState(() {
       _searchCount++;
       _lastSearch = query;
     });
     // Simulate API call on every keystroke - very inefficient!
-    debugPrint('Performing search for: $query');
+    AppLogger.error('❌ NON-OPTIMIZED: Immediate search on keystroke for: "$query" (Search #$_searchCount)');
   }
 
   @override
@@ -216,7 +233,7 @@ class _NonOptimizedDebouncingExampleState
       padding: const EdgeInsets.all(16),
       children: [
         const Card(
-          color: Colors.orange,
+          color: Colors.red,
           child: Padding(
             padding: EdgeInsets.all(16),
             child: Column(
@@ -224,7 +241,7 @@ class _NonOptimizedDebouncingExampleState
               children: [
                 Row(
                   children: [
-                    Icon(Icons.warning, color: Colors.white),
+                    Icon(Icons.cancel, color: Colors.white),
                     SizedBox(width: 8),
                     Text(
                       'Immediate Search',
@@ -282,7 +299,7 @@ class _NonOptimizedDebouncingExampleState
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.orange,
+                        color: Colors.red,
                       ),
                     ),
                   ],
@@ -316,7 +333,7 @@ class _NonOptimizedDebouncingExampleState
         ),
         const SizedBox(height: 16),
         const Card(
-          color: Colors.orange,
+          color: Colors.red,
           child: Padding(
             padding: EdgeInsets.all(12),
             child: Text(
