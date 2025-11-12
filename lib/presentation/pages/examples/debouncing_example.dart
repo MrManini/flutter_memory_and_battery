@@ -5,7 +5,7 @@ import '../../../core/utils/app_logger.dart';
 import '../../widgets/comparison_view.dart';
 
 /// Example demonstrating debouncing for battery optimization
-/// 
+///
 /// KEY OPTIMIZATION:
 /// Debouncing delays the execution of expensive operations until the user
 /// has stopped typing/interacting, reducing unnecessary work and battery drain.
@@ -43,14 +43,18 @@ class _OptimizedDebouncingExampleState
   @override
   void initState() {
     super.initState();
-    AppLogger.info('✅ OPTIMIZED: Debouncer initialized with ${AppConstants.debounceMilliseconds}ms delay');
+    AppLogger.info(
+      '✅ OPTIMIZED: Debouncer initialized with ${AppConstants.debounceMilliseconds}ms delay',
+    );
   }
 
   @override
   void dispose() {
     _controller.dispose();
     _debouncer.dispose();
-    AppLogger.info('✅ OPTIMIZED: Debouncer disposed - search operations cancelled');
+    AppLogger.info(
+      '✅ OPTIMIZED: Debouncer disposed - search operations cancelled',
+    );
     super.dispose();
   }
 
@@ -63,7 +67,9 @@ class _OptimizedDebouncingExampleState
         _lastSearch = query;
       });
       // Simulate API call
-      AppLogger.info('🔍 OPTIMIZED: Debounced search performed for: "$query" (Search #$_searchCount)');
+      AppLogger.info(
+        '🔍 OPTIMIZED: Debounced search performed for: "$query" (Search #$_searchCount)',
+      );
     });
   }
 
@@ -102,10 +108,7 @@ class _OptimizedDebouncingExampleState
                   '✓ Reduces API calls',
                   style: TextStyle(color: Colors.white),
                 ),
-                Text(
-                  '✓ Saves battery',
-                  style: TextStyle(color: Colors.white),
-                ),
+                Text('✓ Saves battery', style: TextStyle(color: Colors.white)),
               ],
             ),
           ),
@@ -145,8 +148,7 @@ class _OptimizedDebouncingExampleState
                   ],
                 ),
                 const SizedBox(height: 8),
-                if (_lastSearch.isNotEmpty)
-                  Text('Last search: "$_lastSearch"'),
+                if (_lastSearch.isNotEmpty) Text('Last search: "$_lastSearch"'),
               ],
             ),
           ),
@@ -178,7 +180,10 @@ class _OptimizedDebouncingExampleState
             padding: EdgeInsets.all(12),
             child: Text(
               'Try typing quickly - search only triggers after you pause',
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -206,25 +211,33 @@ class _NonOptimizedDebouncingExampleState
   @override
   void initState() {
     super.initState();
-    AppLogger.warning('⚠️ NON-OPTIMIZED: No debouncing - will search on every keystroke!');
+    AppLogger.warning(
+      '⚠️ NON-OPTIMIZED: No debouncing - will search on every keystroke!',
+    );
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    AppLogger.warning('⚠️ NON-OPTIMIZED: Controller disposed but no debouncer to clean up');
+    AppLogger.warning(
+      '⚠️ NON-OPTIMIZED: Controller disposed but no debouncer to clean up',
+    );
     super.dispose();
   }
 
   void _onSearchChanged(String query) {
     // PROBLEM: This executes on EVERY keystroke!
-    AppLogger.debug('🔤 NON-OPTIMIZED: User typed: "$query" - searching immediately...');
+    AppLogger.debug(
+      '🔤 NON-OPTIMIZED: User typed: "$query" - searching immediately...',
+    );
     setState(() {
       _searchCount++;
       _lastSearch = query;
     });
     // Simulate API call on every keystroke - very inefficient!
-    AppLogger.error('❌ NON-OPTIMIZED: Immediate search on keystroke for: "$query" (Search #$_searchCount)');
+    AppLogger.error(
+      '❌ NON-OPTIMIZED: Immediate search on keystroke for: "$query" (Search #$_searchCount)',
+    );
   }
 
   @override
@@ -262,10 +275,7 @@ class _NonOptimizedDebouncingExampleState
                   '✗ Excessive API calls',
                   style: TextStyle(color: Colors.white),
                 ),
-                Text(
-                  '✗ Drains battery',
-                  style: TextStyle(color: Colors.white),
-                ),
+                Text('✗ Drains battery', style: TextStyle(color: Colors.white)),
               ],
             ),
           ),
@@ -305,8 +315,7 @@ class _NonOptimizedDebouncingExampleState
                   ],
                 ),
                 const SizedBox(height: 8),
-                if (_lastSearch.isNotEmpty)
-                  Text('Last search: "$_lastSearch"'),
+                if (_lastSearch.isNotEmpty) Text('Last search: "$_lastSearch"'),
               ],
             ),
           ),
@@ -338,7 +347,10 @@ class _NonOptimizedDebouncingExampleState
             padding: EdgeInsets.all(12),
             child: Text(
               'Watch the counter explode as you type!',
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
