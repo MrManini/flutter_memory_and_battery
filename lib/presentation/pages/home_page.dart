@@ -86,7 +86,7 @@ class HomePage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Card(
-                  color: Colors.blue[50],
+                  color: Colors.blue,
                   child: const Padding(
                     padding: EdgeInsets.all(16),
                     child: Column(
@@ -94,7 +94,7 @@ class HomePage extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.info_outline, color: Colors.blue),
+                            Icon(Icons.info_outline, color: Colors.white),
                             SizedBox(width: 8),
                             Text(
                               'About This Template',
