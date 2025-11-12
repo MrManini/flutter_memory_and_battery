@@ -98,7 +98,7 @@ class ComparisonView extends StatelessWidget {
         Container(
           constraints: const BoxConstraints(
             minHeight: 300,
-            maxHeight: 500,
+            maxHeight: 600,
           ),
           child: widget,
         ),
